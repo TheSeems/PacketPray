@@ -1,17 +1,16 @@
 package me.theseems.packetpray.mixin;
 
 import com.google.gson.*;
+import java.lang.reflect.Type;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextContent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.lang.reflect.Type;
 
 @Mixin(Text.Serializer.class)
 @Implements({
@@ -35,7 +34,7 @@ public abstract class PacketPrayTextSerializerMixin {
             e.printStackTrace();
 
             JsonObject object = new JsonObject();
-            object.addProperty("text", "!UNK-S");
+            object.addProperty("text", "!packet-pray-unknown-serialize");
             return object;
         }
     }
@@ -47,11 +46,7 @@ public abstract class PacketPrayTextSerializerMixin {
             LOGGER.warn("Caught exception deserializing '" + json.toString() + "': " + e.getMessage());
             e.printStackTrace();
 
-            return MutableText.of(new TextContent() {
-                public String toString() {
-                    return "!UNK-D";
-                }
-            });
+            return MutableText.of((PlainTextContent) () -> "!packet-pray-unknown-deserialize");
         }
     }
 }
